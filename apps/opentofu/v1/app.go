@@ -55,11 +55,11 @@ func applyFn(ctx context.Context, req *app.OperationRequest) (*app.OperationResp
 	return &app.OperationResponse{
 		Resource: &app.Resource{
 			ExternalID:  properties["arn"].(string),
-			DisplayName: properties["name"].(string),
+			DisplayName: properties["bucket"].(string),
 			Properties:  properties,
 			Links: []*app.Link{
 				{
-					URL:   fmt.Sprintf(consoleURLTemplate, properties["region"], properties["name"]),
+					URL:   fmt.Sprintf(consoleURLTemplate, properties["region"], properties["bucket"]),
 					Title: "AWS Console",
 					Type:  app.LinkTypeExternal,
 				},
@@ -119,7 +119,7 @@ func readFn(ctx context.Context, req *app.OperationRequest) (*app.OperationRespo
 			Properties:  properties,
 			Links: []*app.Link{
 				{
-					URL:   fmt.Sprintf(consoleURLTemplate, properties["region"], properties["name"]),
+					URL:   fmt.Sprintf(consoleURLTemplate, properties["region"], properties["bucket"]),
 					Title: "AWS Console",
 					Type:  app.LinkTypeExternal,
 				},
@@ -143,11 +143,11 @@ func listFn(ctx context.Context, req *app.ListRequest) (*app.ListResponse, error
 	for _, r := range res {
 		resources = append(resources, &app.Resource{
 			ExternalID:  r.Values["arn"].(string),
-			DisplayName: r.Values["name"].(string),
+			DisplayName: r.Values["bucket"].(string),
 			Properties:  r.Values,
 			Links: []*app.Link{
 				{
-					URL:   fmt.Sprintf(consoleURLTemplate, r.Values["region"], r.Values["name"]),
+					URL:   fmt.Sprintf(consoleURLTemplate, r.Values["region"], r.Values["bucket"]),
 					Title: "AWS Console",
 					Type:  app.LinkTypeExternal,
 				},
