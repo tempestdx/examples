@@ -8,7 +8,7 @@ import (
 )
 
 func (tf *Runner) init() error {
-	cmd := exec.Command(tf.openTofuBinary, "init")
+	cmd := exec.Command(tf.openTofuBinary, "init", "-json", "-no-color")
 	cmd.Dir = tf.workDir
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
@@ -17,7 +17,7 @@ func (tf *Runner) init() error {
 }
 
 func (tf *Runner) apply(variables []string) error {
-	args := []string{"apply", "-no-color", "-auto-approve", "-input=false"}
+	args := []string{"apply", "-no-color", "-auto-approve", "-input=false", "-json"}
 	args = append(args, variables...)
 
 	cmd := exec.Command(tf.openTofuBinary, args...)
@@ -29,7 +29,7 @@ func (tf *Runner) apply(variables []string) error {
 }
 
 func (tf *Runner) destroy(variables []string) error {
-	args := []string{"destroy", "-no-color", "-auto-approve", "-input=false", "-refresh=false"}
+	args := []string{"destroy", "-no-color", "-auto-approve", "-input=false", "-refresh=false", "-json"}
 	args = append(args, variables...)
 
 	cmd := exec.Command(tf.openTofuBinary, args...)
@@ -43,7 +43,7 @@ func (tf *Runner) destroy(variables []string) error {
 func (tf *Runner) show() (*State, error) {
 	out := new(bytes.Buffer)
 
-	args := []string{"show", "-json"}
+	args := []string{"show", "-json", "-no-color"}
 	cmd := exec.Command(tf.openTofuBinary, args...)
 	cmd.Dir = tf.workDir
 	cmd.Stdout = out
