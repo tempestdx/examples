@@ -104,12 +104,16 @@ func readFn(ctx context.Context, req *app.OperationRequest) (*app.OperationRespo
 		return nil, fmt.Errorf("failed to show OpenTofu state: %w", err)
 	}
 
-	properties := make(map[string]any)
+	var properties map[string]any
 	for _, r := range state.Values.RootModule.Resources {
 		if r.Type == "aws_s3_bucket" && r.Values["arn"] == req.Resource.ExternalID {
 			properties = r.Values
 			break
 		}
+	}
+
+	if properties == nil {
+		return nil, fmt.Errorf("resource not found")
 	}
 
 	return &app.OperationResponse{
