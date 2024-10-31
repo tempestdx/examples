@@ -1,0 +1,4 @@
+# Tempest build artifacts
+.build/
+
+# opentofu examples

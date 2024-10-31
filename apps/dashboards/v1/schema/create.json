@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The name of the dashboard."
+        },
+        "description": {
+            "type": "string",
+            "description": "The description of the dashboard."
+        }
+    },
+    "required": [
+        "name"
+    ],
+    "additionalProperties": false
+}
