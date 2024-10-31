@@ -11,7 +11,8 @@ func (tf *Runner) Apply(input map[string]any) (*State, error) {
 
 	variables := make([]string, 0, len(input))
 	for k, v := range input {
-		variables = append(variables, fmt.Sprintf("-var %s=%v", k, v))
+		arg := []string{"-var", fmt.Sprintf("%s=%v", k, v)}
+		variables = append(variables, arg...)
 	}
 
 	if err := tf.apply(variables); err != nil {
