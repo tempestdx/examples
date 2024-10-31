@@ -1,0 +1,8 @@
+# Tempest build artifacts
+.build/
+
+# opentofu examples
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
