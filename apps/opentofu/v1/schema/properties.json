@@ -3,14 +3,17 @@
     "type": "object",
     "properties": {
         "arn": {
+            "title": "Amazon Resource Name (ARN)",
             "type": "string",
             "description": "The Amazon Resource Name (ARN) of the S3 Bucket."
         },
         "bucket": {
+            "title": "Bucket Name",
             "type": "string",
             "description": "The name of the S3 Bucket."
         },
         "region": {
+            "title": "Region",
             "type": "string",
             "description": "The AWS region of the S3 Bucket."
         }

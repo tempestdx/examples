@@ -3,15 +3,18 @@
     "type": "object",
     "properties": {
         "name": {
+            "title": "Name",
             "type": "string",
             "description": "The name of the S3 Bucket."
         },
         "versioning": {
+            "title": "Enabled Versioning",
             "type": "boolean",
             "description": "The versioning state of the S3 Bucket.",
             "default": false
         },
         "region": {
+            "title": "Region",
             "type": "string",
             "description": "The AWS region of the S3 Bucket.",
             "default": "us-east-1"
