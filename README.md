@@ -37,53 +37,10 @@ $ OPENTOFU_WORKDIR=$(pwd) tempest app test opentofu:v1 --operation create --type
 Resource created with ID:  arn:aws:s3:::my-test-bucket
 Properties:
 {
-  "acceleration_status": "",
-  "acl": null,
   "arn": "arn:aws:s3:::my-test-bucket",
   "bucket": "my-test-bucket",
-  "bucket_domain_name": "my-test-bucket.s3.amazonaws.com",
-  "bucket_prefix": "",
-  "bucket_regional_domain_name": "my-test-bucket.s3.us-east-1.amazonaws.com",
-  "cors_rule": [],
-  "force_destroy": false,
-  "id": "my-test-bucket",
-  "lifecycle_rule": [],
-  "logging": [],
-  "object_lock_configuration": [],
-  "object_lock_enabled": false,
-  "policy": "",
   "region": "us-east-1",
-  "replication_configuration": [],
-  "request_payer": "BucketOwner",
-  "server_side_encryption_configuration": [
-    {
-      "rule": [
-        {
-          "apply_server_side_encryption_by_default": [
-            {
-              "kms_master_key_id": "",
-              "sse_algorithm": "AES256"
-            }
-          ],
-          "bucket_key_enabled": false
-        }
-      ]
-    }
-  ],
-  "tags": null,
-  "tags_all": {
-    "ManagedByTempest": "true"
-  },
-  "timeouts": null,
-  "versioning": [
-    {
-      "enabled": false,
-      "mfa_delete": false
-    }
-  ],
-  "website": [],
-  "website_domain": null,
-  "website_endpoint": null
+  "versioning": "Suspended"
 }
 ```
 
