@@ -77,7 +77,7 @@ Operations Supported:
 
 Health Check Supported: ✅
 
-$ tempest app test dashboards:v1 --preserve-build-dir --operation create --type dashboard --input '{"name": "my-example-dashboard"}'
+$ tempest app test dashboards:v1 --operation create --type dashboard --input '{"name": "my-example-dashboard"}'
 Resource created with ID:  6Oh8ZeHr
 Properties:
 {
@@ -87,6 +87,6 @@ Properties:
   "project_id": "TEMPESTCLIFoWJFMwo"
 }
 
-$ tempest app test dashboards:v1 --preserve-build-dir --operation delete --type dashboard -e 6Oh8ZeHr
+$ tempest app test dashboards:v1 --operation delete --type dashboard -e 6Oh8ZeHr
 Resource deleted with ID:  6Oh8ZeHr
 ```
