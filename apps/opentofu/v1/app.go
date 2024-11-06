@@ -46,9 +46,16 @@ func applyFn(ctx context.Context, req *app.OperationRequest) (*app.OperationResp
 
 	properties := make(map[string]any)
 	for _, r := range state.Values.RootModule.Resources {
-		if r.Type == "aws_s3_bucket" && r.Values["bucket"] == req.Input["name"] {
-			properties = r.Values
-			break
+		switch {
+		case r.Type == "aws_s3_bucket" && r.Values["bucket"] == req.Input["name"]:
+			properties["arn"] = r.Values["arn"]
+			properties["bucket"] = r.Values["bucket"]
+			properties["region"] = r.Values["region"]
+		case r.Type == "aws_s3_bucket_versioning" && r.Values["bucket"] == req.Input["name"]:
+			vconfs := r.Values["versioning_configuration"].([]any)
+			if len(vconfs) == 1 {
+				properties["versioning"] = vconfs[0].(map[string]any)["status"]
+			}
 		}
 	}
 
@@ -104,15 +111,22 @@ func readFn(ctx context.Context, req *app.OperationRequest) (*app.OperationRespo
 		return nil, fmt.Errorf("failed to show OpenTofu state: %w", err)
 	}
 
-	var properties map[string]any
+	properties := make(map[string]any)
 	for _, r := range state.Values.RootModule.Resources {
-		if r.Type == "aws_s3_bucket" && r.Values["arn"] == req.Resource.ExternalID {
-			properties = r.Values
-			break
+		switch {
+		case r.Type == "aws_s3_bucket" && r.Values["bucket"] == req.Resource.ExternalID:
+			properties["arn"] = r.Values["arn"]
+			properties["bucket"] = r.Values["bucket"]
+			properties["region"] = r.Values["region"]
+		case r.Type == "aws_s3_bucket_versioning" && r.Values["bucket"] == req.Resource.ExternalID:
+			vconfs := r.Values["versioning_configuration"].([]any)
+			if len(vconfs) == 1 {
+				properties["versioning"] = vconfs[0].(map[string]any)["status"]
+			}
 		}
 	}
 
-	if properties == nil {
+	if len(properties) == 0 {
 		return nil, fmt.Errorf("resource not found")
 	}
 
@@ -138,20 +152,42 @@ func listFn(ctx context.Context, req *app.ListRequest) (*app.ListResponse, error
 		return nil, fmt.Errorf("failed to create OpenTofu runner: %w", err)
 	}
 
-	res, err := tofu.List("aws_s3_bucket")
+	buckets, err := tofu.List("aws_s3_bucket")
 	if err != nil {
 		return nil, fmt.Errorf("failed to list OpenTofu resources: %w", err)
 	}
 
-	resources := make([]*app.Resource, 0, len(res))
-	for _, r := range res {
+	versionings, err := tofu.List("aws_s3_bucket_versioning")
+	if err != nil {
+		return nil, fmt.Errorf("failed to list OpenTofu resources: %w", err)
+	}
+
+	resources := make([]*app.Resource, 0, len(buckets))
+	for _, bucket := range buckets {
+		properties := make(map[string]any)
+		if bucket.Type == "aws_s3_bucket" {
+			properties["arn"] = bucket.Values["arn"]
+			properties["bucket"] = bucket.Values["bucket"]
+			properties["region"] = bucket.Values["region"]
+		}
+
+		// Attach the versioning config to the bucket if it exists
+		for _, versioning := range versionings {
+			if versioning.Values["bucket"] == bucket.Values["bucket"] {
+				vconfs := versioning.Values["versioning_configuration"].([]any)
+				if len(vconfs) == 1 {
+					properties["versioning"] = vconfs[0].(map[string]any)["status"]
+				}
+			}
+		}
+
 		resources = append(resources, &app.Resource{
-			ExternalID:  r.Values["arn"].(string),
-			DisplayName: r.Values["bucket"].(string),
-			Properties:  r.Values,
+			ExternalID:  bucket.Values["arn"].(string),
+			DisplayName: bucket.Values["bucket"].(string),
+			Properties:  bucket.Values,
 			Links: []*app.Link{
 				{
-					URL:   fmt.Sprintf(consoleURLTemplate, r.Values["region"], r.Values["bucket"]),
+					URL:   fmt.Sprintf(consoleURLTemplate, bucket.Values["region"], bucket.Values["bucket"]),
 					Title: "AWS Console",
 					Type:  app.LinkTypeExternal,
 				},
