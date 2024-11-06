@@ -16,12 +16,11 @@
             "title": "Region",
             "type": "string",
             "description": "The AWS region of the S3 Bucket."
+        },
+        "versioning_status": {
+            "title": "Versioning Status",
+            "type": "string",
+            "description": "The current versioning status of the S3 bucket."
         }
-    },
-    "required": [
-        "arn",
-        "bucket",
-        "region"
-    ],
-    "additionalProperties": true
+    }
 }
