@@ -1,12 +1,16 @@
 # Tempest Private App Examples
 
+The official [Tempest][tempest] Private App examples repository.
+
 ## OpenTofu
 
-The OpenTofu example shows how to execute a simple OpenTofu configuration, and interact with the resources in Tempest.
+The OpenTofu example shows how to execute a simple OpenTofu configuration, and
+interact with the resources in Tempest.
 
 ### Usage
 
-1. Navigate to the directory where the OpenTofu module is found. In the example code this would be `apps/opentofu/v1/module`.
+1. Navigate to the directory where the OpenTofu module is found. In the example
+   code this would be `apps/opentofu/v1/module`.
 2. Run `OPENTOFU_WORKDIR=$(pwd) tempest app <command> opentofu:v1`
 
 ### Example
@@ -46,12 +50,16 @@ Properties:
 
 ## Dashboards
 
-The Dashboards example implements a Private App that interacts with the fictional "Dashboards" server found in `deps/`. This example showcases how Tempest can orchestrate your custom in-house servers via Private Apps.
+The Dashboards example implements a Private App that interacts with the
+fictional "Dashboards" server found in `deps/`. This example showcases how
+Tempest can orchestrate your custom in-house servers via Private Apps.
 
 ### Usage
 
-1. In one terminal, run the dashboards server. `go run deps/dashboards/server/main.go`
-2. In another terminal, navigate to the `tempestdx/examples` repository and use the app.
+1. In one terminal, run the dashboards server.
+   `go run deps/dashboards/server/main.go`
+2. In another terminal, navigate to the `tempestdx/examples` repository and use
+   the app.
 
 ### Example
 
@@ -90,3 +98,12 @@ Properties:
 $ tempest app test dashboards:v1 --operation delete --type dashboard -e 6Oh8ZeHr
 Resource deleted with ID:  6Oh8ZeHr
 ```
+
+## Support
+
+To share any requests, bugs or comments, please [open an issue][issues] or
+[submit a pull request][pulls].
+
+[issues]: https://github.com/tempestdx/examples/issues/new
+[pulls]: https://github.com/tempestdx/examples/pulls
+[tempest]: https://tempestdx.com/
