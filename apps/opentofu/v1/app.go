@@ -19,15 +19,15 @@ const consoleURLTemplate = "https://%s.console.aws.amazon.com/s3/buckets/%s"
 var moduleFS embed.FS
 
 // setupTofu is a helper function that creates a new OpenTofu runner.
-// It first pulls the 'secret_key' and 'access_key' from the Tempest Environment Variables.
+// It first pulls the 'SECRET_KEY' and 'ACCESS_KEY' from the Tempest Environment Variables.
 // It then creates a new OpenTofu runner with the path to the tofu binary, the module filesystem, and the environment variables.
 func setupTofu(env map[string]app.EnvironmentVariable) (*opentofu.Runner, error) {
-	secretKey, ok := env["secret_key"]
+	secretKey, ok := env["SECRET_KEY"]
 	if !ok {
 		return nil, fmt.Errorf("secret_key not found in environment")
 	}
 
-	accessKey, ok := env["access_key"]
+	accessKey, ok := env["ACCESS_KEY"]
 	if !ok {
 		return nil, fmt.Errorf("access_key not found in environment")
 	}

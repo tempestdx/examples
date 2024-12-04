@@ -9,15 +9,12 @@ interact with the resources in Tempest.
 
 ### Usage
 
-1. Navigate to the directory where the OpenTofu module is found. In the example
-   code this would be `apps/opentofu/v1/module`.
-2. Run `OPENTOFU_WORKDIR=$(pwd) tempest app <command> opentofu:v1`
+1. Run the app with the CLI from with the `examples/` directory.
 
 ### Example
 
 ```shell
-$ cd apps/opentofu/v1/module
-$ OPENTOFU_WORKDIR=$(pwd) tempest app describe opentofu:v1
+$ tempest app describe opentofu:v1
 
 Tempest App Description
 -----------------------
@@ -29,14 +26,14 @@ Resource Type: S3 Bucket
 
 Operations Supported:
 - ✅ Read
-- ✅ List
+- ❌ List
 - ✅ Create
 - ✅ Update
 - ✅ Delete
 
 Health Check Supported: ✅
 
-$ OPENTOFU_WORKDIR=$(pwd) tempest app test opentofu:v1 --operation create --type s3_bucket --input '{"name":"my-test-bucket"}'
+$ tempest app test opentofu:v1 --operation create --type s3_bucket --input '{"name":"my-test-bucket"}' --env SECRET_KEY=abcd123 --env ACCESS_KEY=12345
 
 Resource created with ID:  arn:aws:s3:::my-test-bucket
 Properties:
