@@ -299,7 +299,7 @@ func App() *app.App {
 		// LifecycleStageMonitor
 		LifecycleStage: app.LifecycleStageOperate,
 		// The PropertiesSchema is the JSON schema that defines the properties of the individual resource.
-		// After every Create, Update, Delete, Read, or List operation, the properties returned by the function
+		// After every Create, Update, Read, or List operation, the properties returned by the function
 		// will be validated against this schema.
 		// The properties in this schema can be used as input to other recipe steps in the UI.
 		PropertiesSchema: app.MustParseJSONSchema(propertiesSchema),
@@ -320,8 +320,9 @@ func App() *app.App {
 
 	// Assign a function for each of the CRUD operations, starting with Create and Update.
 	// Create and Update also include a schema that defines the shape of the input.
-	// The Tempest UI will also display these inputs to the user when creating or updating a resource as part of a Recipe.
+	// The Tempest UI will display these inputs to the user when creating or updating a resource as part of a Recipe.
 	// That input will be validated against the schema before the function is called.
+
 	// Create is called when Tempest is instructed to create a new resource in the external system.
 	bucketDef.CreateFn(
 		createFn,

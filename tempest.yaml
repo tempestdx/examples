@@ -6,4 +6,7 @@ apps:
   opentofu:
     - path: apps/opentofu/v1
       version: v1
+  helloworld:
+    - path: apps/helloworld/v1
+      version: v1
 build_dir: .build

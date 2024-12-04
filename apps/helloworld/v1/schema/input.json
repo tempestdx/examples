@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "color": {
+            "title": "Color",
+            "description": "The color of the resource.",
+            "type": "string",
+            "enum": [
+                "red",
+                "green",
+                "blue"
+            ],
+            "default": "red"
+        }
+    },
+    "required": [],
+    "additionalProperties": false
+}
