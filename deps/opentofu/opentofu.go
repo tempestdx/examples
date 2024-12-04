@@ -1,25 +1,35 @@
 package opentofu
 
 import (
-	"log/slog"
+	"io/fs"
 	"os"
 )
 
 type Runner struct {
 	openTofuBinary string
 	workDir        string
-	logger         *slog.Logger
+	environment    []string
 }
 
-type Options struct {
-	WorkDir      string
-	OpenTofuPath string
-}
+func New(tfPath string, moduleFS fs.FS, environment map[string]string) (*Runner, error) {
+	tmpDir, err := os.MkdirTemp("", "opentofu")
+	if err != nil {
+		return nil, err
+	}
 
-func New(tfPath, workdir string) (*Runner, error) {
+	err = os.CopyFS(tmpDir, moduleFS)
+	if err != nil {
+		return nil, err
+	}
+
+	var env []string
+	for k, v := range environment {
+		env = append(env, k+"="+v)
+	}
+
 	return &Runner{
 		openTofuBinary: tfPath,
-		workDir:        workdir,
-		logger:         slog.New(slog.NewJSONHandler(os.Stdout, nil)),
+		workDir:        tmpDir,
+		environment:    env,
 	}, nil
 }
