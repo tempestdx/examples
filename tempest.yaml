@@ -3,6 +3,9 @@ apps:
   dashboards:
     - path: apps/dashboards/v1
       version: v1
+  helloworld:
+    - path: apps/helloworld/v1
+      version: v1
   opentofu:
     - path: apps/opentofu/v1
       version: v1
