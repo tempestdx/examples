@@ -234,8 +234,8 @@ func App() *app.App {
 	exampleDef.CreateFn(
 		// The function handler that will be run when the Create operation is called.
 		createFn,
-		// The schema that defines the input for the Create operation. This schema is empty, but can be extended to suit your needs.
-		app.MustParseJSONSchema(app.GenericEmptySchema),
+		// The schema that defines the input for the Create operation.
+		app.MustParseJSONSchema(input),
 	)
 
 	// Update is called when Tempest is instructed to update an existing resource in the external system.
@@ -247,8 +247,8 @@ func App() *app.App {
 	exampleDef.UpdateFn(
 		// The function handler that will be run when the Update operation is called.
 		updateFn,
-		// The schema that defines the input for the Update operation. This schema is empty, but can be extended to suit your needs.
-		app.MustParseJSONSchema(app.GenericEmptySchema),
+		// The schema that defines the input for the Update operation.
+		app.MustParseJSONSchema(input),
 	)
 
 	// Read and Delete functions are also assigned to the resource definition.
