@@ -6,11 +6,6 @@
             "title": "Color",
             "description": "The color of the resource.",
             "type": "string",
-            "enum": [
-                "red",
-                "green",
-                "blue"
-            ],
             "default": "red"
         }
     },
