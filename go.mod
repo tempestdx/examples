@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.6
-	github.com/tempestdx/sdk-go v0.1.3
+	github.com/tempestdx/sdk-go v0.1.4
 )
 
 require (
@@ -15,7 +15,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/sync v0.9.0 // indirect
-	golang.org/x/tools v0.27.0 // indirect
-	google.golang.org/protobuf v1.35.2 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/tools v0.28.0 // indirect
+	google.golang.org/protobuf v1.36.0 // indirect
 )
