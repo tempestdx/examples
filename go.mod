@@ -3,7 +3,7 @@ module github.com/tempestdx/examples
 go 1.23.2
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.35.0
+	github.com/aws/aws-sdk-go-v2 v1.36.0
 	github.com/tempestdx/sdk-go v0.1.5
 )
 
