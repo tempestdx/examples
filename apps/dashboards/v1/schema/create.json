@@ -1,12 +1,15 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$schema": "https://developer.tempestdx.com/schema/v1/tempest-app-schema.json",
+    "$id": "https://schema.tempestdx.io/privateapps/dashboards/create.json",
     "type": "object",
     "properties": {
         "name": {
+            "title": "Name",
             "type": "string",
             "description": "The name of the dashboard."
         },
         "description": {
+            "title": "Description",
             "type": "string",
             "description": "The description of the dashboard."
         }
