@@ -1,6 +1,8 @@
 name: go-licenses
 
-on: [pull_request]
+on:
+  push:
+    branches: ["main-tempoff"]
 
 permissions:
   contents: read
@@ -13,8 +15,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: "${{ github.workspace }}/go.mod"
       - name: Get google/go-licenses package
-        run: go install github.com/google/go-licenses@latest
+        run: cd ${{ github.workspace }}; go install github.com/google/go-licenses/v2@latest
       - name: go-licenses
-        run: go-licenses check ${{ github.workspace }}/... --allowed_licenses=Apache-2.0,BSD-3-Clause,BSD-2-Clause,MIT
+        run: cd ${{ github.workspace }}; go-licenses check --allowed_licenses=Apache-2.0,BSD-3-Clause,BSD-2-Clause,MIT

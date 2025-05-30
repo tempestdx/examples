@@ -1,0 +1,52 @@
+{
+    "$schema": "https://developer.tempestdx.com/schema/v1/tempest-app-schema.json",
+    "$id": "https://schema.tempestdx.io/privateapps/argocd/create.json",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the Application to create."
+        },
+        "namespace": {
+            "type": "string",
+            "title": "Namespace",
+            "description": "The namespace to deploy the rendered manifests to.",
+            "default": "default"
+        },
+        "repo_url": {
+            "type": "string",
+            "title": "Repo HTTP URL",
+            "description": "The HTTP URL of the Git repository that contains the Kubernetes manifests.",
+            "default": "https://github.com/tempestdx/example-repository.git"
+        },
+        "source_path": {
+            "type": "string",
+            "title": "Source Path",
+            "description": "The path to the directory within the repository that contains the manifest.",
+            "examples": [
+                "applications/example-app/kustomize/overlays/sandbox"
+            ]
+        },
+        "image": {
+            "type": "string",
+            "title": "Image",
+            "description": "The image to deploy.",
+            "examples": [
+                "us-west2-docker.pkg.dev/tempestdx/example-repository/app:1.0.1"
+            ]
+        },
+        "target_revision": {
+            "type": "string",
+            "title": "Target Revision",
+            "description": "The target revision of the Git repository to deploy.",
+            "default": "HEAD"
+        }
+    },
+    "required": [
+        "name",
+        "source_path",
+        "image"
+    ],
+    "additionalProperties": false
+}

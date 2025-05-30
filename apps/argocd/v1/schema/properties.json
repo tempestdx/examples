@@ -1,0 +1,46 @@
+{
+    "$schema": "https://developer.tempestdx.com/schema/v1/tempest-properties-schema.json",
+    "$id": "https://schema.tempestdx.io/privateapps/argocd/properties.json",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the Application in ArgoCD."
+        },
+        "namespace": {
+            "type": "string",
+            "title": "Namespace",
+            "description": "The namespace where the Application's manifests are deployed."
+        },
+        "repo_url": {
+            "type": "string",
+            "title": "Repo HTTP URL",
+            "description": "The HTTP URL of the Git repository that contains the Kubernetes manifests."
+        },
+        "source_path": {
+            "type": "string",
+            "title": "Source Path",
+            "description": "The path to the directory within the repository that contains the manifests."
+        },
+        "image": {
+            "type": "string",
+            "title": "Image",
+            "description": "The image currently deployed by the Application."
+        },
+        "cluster": {
+            "type": "string",
+            "title": "Cluster",
+            "description": "The Cluster's connection address."
+        }
+    },
+    "required": [
+        "name",
+        "namespace",
+        "repo_url",
+        "source_path",
+        "image",
+        "cluster"
+    ],
+    "additionalProperties": false
+}

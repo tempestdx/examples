@@ -1,5 +1,8 @@
 version: v1
 apps:
+  argocd:
+    - path: apps/argocd/v1
+      version: v1
   dashboards:
     - path: apps/dashboards/v1
       version: v1
