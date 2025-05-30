@@ -15,6 +15,6 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - name: Get google/go-licenses package
-        run: go install github.com/google/go-licenses@latest
+        run: go install github.com/google/go-licenses/v2@latest
       - name: go-licenses
         run: go-licenses check ${{ github.workspace }}/... --allowed_licenses=Apache-2.0,BSD-3-Clause,BSD-2-Clause,MIT
