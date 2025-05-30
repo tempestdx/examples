@@ -1,0 +1,49 @@
+# ArgoCD Application Template
+#
+# This Go template generates a complete ArgoCD Application manifest.
+# Template variables come from the ApplicationTemplateInput struct in app.go
+# and are populated with user input from Tempest.
+#
+# For more information about ArgoCD Applications, see:
+# https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
+
+apiVersion: argoproj.io/v1alpha1  # ArgoCD's custom API version
+kind: Application                  # Kubernetes resource type for ArgoCD Applications
+
+metadata:
+  name: {{ .Name }}               # Application name from user input
+  namespace: argocd               # ArgoCD applications are typically deployed in the "argocd" namespace
+  finalizers:
+    # This finalizer ensures ArgoCD cleans up all deployed resources when the Application is deleted
+    # Without this, deleting the Application would leave deployed resources orphaned
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  # Destination defines WHERE the application's resources will be deployed
+  destination:
+    namespace: {{ .Namespace }}         # Target namespace from user input (where app resources go)
+    server: https://kubernetes.default.svc  # Target cluster (in-cluster reference)
+
+  # Project defines which ArgoCD project this application belongs to
+  # Projects provide multi-tenancy and RBAC boundaries within ArgoCD
+  project: default                      # Using the default project for simplicity
+
+  # Source defines WHERE to get the application manifests from
+  source:
+    path: {{ .SourcePath }}             # Directory path within the Git repository
+    repoURL: {{ .RepoURL }}             # Git repository URL (HTTP/HTTPS)
+    targetRevision: {{ .TargetRevision }} # Git branch, tag, or commit to deploy
+
+    # Kustomize configuration for customizing the deployment
+    kustomize:
+      images:
+        # Image override using Kustomize syntax: "name=newImage"
+        # This allows updating the container image without modifying the Git repository
+        # Format: "containerName=imageRegistry/imageName:tag"
+        - {{ .Name }}={{ .Image }}
+
+  # Sync policy defines HOW ArgoCD should deploy and maintain the application
+  syncPolicy:
+    automated:
+      prune: true      # Automatically delete resources that are no longer defined in Git
+      selfHeal: true   # Automatically revert manual changes to match Git state
