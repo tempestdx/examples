@@ -1,11 +1,9 @@
 module github.com/tempestdx/examples
 
-go 1.24.1
-
-toolchain go1.24.3
+go 1.24.4
 
 require (
-	github.com/argoproj/argo-cd/v3 v3.0.5
+	github.com/argoproj/argo-cd/v3 v3.0.6
 	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/tempestdx/sdk-go v0.1.6
