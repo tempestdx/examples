@@ -3,7 +3,7 @@ module github.com/tempestdx/examples
 go 1.24.6
 
 require (
-	github.com/argoproj/argo-cd/v3 v3.1.1
+	github.com/argoproj/argo-cd/v3 v3.1.2
 	github.com/aws/aws-sdk-go-v2 v1.38.2
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/tempestdx/sdk-go v0.1.6
@@ -152,7 +152,7 @@ require (
 	k8s.io/kube-aggregator v0.33.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250610211856-8b98d1ed966a // indirect
 	k8s.io/kubectl v0.33.1 // indirect
-	k8s.io/kubernetes v1.33.2 // indirect
+	k8s.io/kubernetes v1.33.4 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
