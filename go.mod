@@ -3,8 +3,8 @@ module github.com/tempestdx/examples
 go 1.24.6
 
 require (
-	github.com/argoproj/argo-cd/v3 v3.1.2
-	github.com/aws/aws-sdk-go-v2 v1.38.2
+	github.com/argoproj/argo-cd/v3 v3.1.3
+	github.com/aws/aws-sdk-go-v2 v1.38.3
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/tempestdx/sdk-go v0.1.6
 	k8s.io/apimachinery v0.33.4
