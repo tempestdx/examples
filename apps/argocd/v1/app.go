@@ -19,6 +19,7 @@ import (
 	"context"
 	"embed"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -28,16 +29,13 @@ import (
 	"text/template"
 	"time"
 
-	argocd "github.com/argoproj/argo-cd/v3/pkg/apis/application/v1alpha1"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/tempestdx/sdk-go/app"
+	"gopkg.in/yaml.v3"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/runtime/serializer"
-	"k8s.io/apimachinery/pkg/runtime/serializer/yaml"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -410,42 +408,32 @@ func readFn(ctx context.Context, req *app.OperationRequest) (*app.OperationRespo
 		return nil, err
 	}
 
-	// Convert the unstructured object to a typed ArgoCD Application
-	// This allows us to access ArgoCD-specific fields safely
-	scheme := runtime.NewScheme()
-	err = argocd.AddToScheme(scheme)
-	if err != nil {
-		return nil, err
-	}
-
-	data, err := obj.MarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-
-	var application argocd.Application
-	_, _, err = serializer.NewCodecFactory(scheme).UniversalDeserializer().Decode(data, nil, &application)
-	if err != nil {
-		return nil, err
-	}
-
-	// Extract the current image from the ArgoCD Application spec
-	// ArgoCD stores Kustomize image overrides in the source configuration
+	// Extract fields directly from the unstructured object
+	// This avoids needing to deserialize to a typed ArgoCD Application
+	name := obj.GetName()
+	namespace := obj.GetNamespace()
+	
+	// Extract spec.source fields using unstructured helpers
+	repoURL, _, _ := unstructured.NestedString(obj.Object, "spec", "source", "repoURL")
+	sourcePath, _, _ := unstructured.NestedString(obj.Object, "spec", "source", "path")
+	
+	// Extract the current image from Kustomize configuration
 	var image string
-	if len(application.Spec.Source.Kustomize.Images) > 0 {
-		image = string(application.Spec.Source.Kustomize.Images[0])
+	images, found, _ := unstructured.NestedStringSlice(obj.Object, "spec", "source", "kustomize", "images")
+	if found && len(images) > 0 {
+		image = images[0]
 	}
 
 	// Return current resource state to Tempest
 	return &app.OperationResponse{
 		Resource: &app.Resource{
 			ExternalID:  req.Resource.ExternalID,
-			DisplayName: application.GetName(),
+			DisplayName: name,
 			Properties: map[string]any{
-				"name":        application.GetName(),
-				"namespace":   application.GetNamespace(),
-				"repo_url":    application.Spec.Source.RepoURL,
-				"source_path": application.Spec.Source.Path,
+				"name":        name,
+				"namespace":   namespace,
+				"repo_url":    repoURL,
+				"source_path": sourcePath,
 				"image":       image,
 				"cluster":     config.Host,
 			},
@@ -457,10 +445,23 @@ func readFn(ctx context.Context, req *app.OperationRequest) (*app.OperationRespo
 // It handles both ArgoCD Applications and Kubernetes Secrets with appropriate logic
 // This function demonstrates the "apply" pattern used by kubectl and other tools
 func apply(ctx context.Context, dc *dynamic.DynamicClient, manifest []byte) (string, error) {
-	// Parse the YAML manifest into an unstructured Kubernetes object
-	decoder := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme)
+	// Parse the YAML manifest and convert to JSON for unstructured object
+	// We use gopkg.in/yaml.v3 which is compatible with the rest of our dependencies
+	var yamlObj interface{}
+	err := yaml.Unmarshal(manifest, &yamlObj)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse YAML manifest: %w", err)
+	}
+	
+	// Convert to JSON
+	jsonBytes, err := json.Marshal(yamlObj)
+	if err != nil {
+		return "", fmt.Errorf("failed to convert YAML to JSON: %w", err)
+	}
+	
+	// Parse into unstructured object
 	obj := &unstructured.Unstructured{}
-	_, _, err := decoder.Decode(manifest, nil, obj)
+	err = obj.UnmarshalJSON(jsonBytes)
 	if err != nil {
 		return "", fmt.Errorf("failed to decode manifest: %w", err)
 	}
